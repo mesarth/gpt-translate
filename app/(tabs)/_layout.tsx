@@ -1,62 +1,45 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable, useColorScheme } from 'react-native';
+import { Tabs } from 'expo-router';
+import { Camera, Languages, LayoutPanelLeft, MenuSquare, Star } from 'lucide-react-native';
+import { DrawerToggle } from '~/components/DrawerToggle';
+import { ThemeToggle } from '~/components/ThemeToggle';
 
-import Colors from '../../constants/Colors';
-
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+export default function TabsLayout() {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-      }}>
+    <Tabs screenOptions={screenOptions}>
       <Tabs.Screen
-        name="main"
+        name='main'
         options={{
           title: 'Translate',
-          tabBarIcon: ({ color }) => <TabBarIcon name="language" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
+          tabBarIcon({color, size}) {
+            return <Languages color={color} size={size} />;
+          },
         }}
       />
       <Tabs.Screen
-        name="camera"
+       name='camera'
+       options={{
+         title: 'Camera',
+         tabBarIcon({color, size}) {
+           return <Camera color={color} size={size} />;
+         },
+       }}
+      />
+      <Tabs.Screen
+        name='favorites'
         options={{
-          title: 'Camera',
-          tabBarIcon: ({ color }) => <TabBarIcon name="camera" color={color} />,
+          title: 'Favorites',
+          tabBarIcon({color, size}) {
+            return <Star color={color} size={size} />;
+          },
         }}
-      />
-      <Tabs.Screen
-      name="favorites"
-      options={{
-        title: 'Favorites',
-        tabBarIcon: ({ color }) => <TabBarIcon name="star" color={color} />,
-      }}
       />
     </Tabs>
   );
 }
+
+type RootTabs = React.ComponentProps<typeof Tabs>;
+type ScreenOptions = RootTabs['screenOptions'];
+
+const screenOptions: ScreenOptions = {
+  headerRight: () => <ThemeToggle />,
+};
