@@ -1,0 +1,22 @@
+{
+  "name": "gpt-translate-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "fastify": "^4.25.2",
+    "fastify-sse-v2": "^3.1.2",
+    "openai": "^4.24.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.4",
+    "typescript": "^5.3.3"
+  }
+}
