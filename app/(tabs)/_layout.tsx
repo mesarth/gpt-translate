@@ -7,7 +7,7 @@ export default function TabsLayout() {
   return (
     <Tabs screenOptions={screenOptions}>
       <Tabs.Screen
-        name='main'
+        name='index'
         options={{
           title: 'Translate',
           tabBarIcon({color, size}) {

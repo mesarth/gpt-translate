@@ -2,24 +2,32 @@ import React, { useCallback, useState } from 'react';
 import { View, Text } from 'react-native';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
+import { Combobox, ComboboxOption } from '~/components/ui/combobox';
 import { Separator } from '~/components/ui/separator';
+import { Switch } from '~/components/ui/switch';
 import { Textarea } from '~/components/ui/textarea';
-import { TranslationResponse, translate } from '~/service/translation.service';
+import { TranslationResponse, languages, translate } from '~/service/translation.service';
 
 
 export default function MainScreen() {
   const [input, setInput] = useState<string>('');
   const [output, setOutput] = useState<string>('');
+  const [selectedLanguage, setSelectedLanguage] = React.useState<ComboboxOption | null>(null);
+
+  const languagesOptions = languages.map(l => ({label: l, value: l}));
 
   const handleTranslate = () => {
-    console.log("translate");
-    translate(input, "german").then((res: TranslationResponse) => {
-      console.log("success ", res);
+    if (!selectedLanguage?.value) return;
+    translate(input, selectedLanguage?.value).then((res: TranslationResponse) => {
       setOutput(res?.message ?? '');
     },
     err => console.log("error ", err)
     );
   };
+
+  const translationActivated = () => {
+    return input.length > 3 && selectedLanguage?.value;
+  }
 
   return (
     <View className='flex-1 justify-center items-center p-10'>
@@ -27,8 +35,9 @@ export default function MainScreen() {
       <Card className='p-3 w-full'>
         <CardContent className='flex gap-3'>
           <Textarea placeholder='Enter Text' onChangeText={(t) => setInput(t)}/>
-          <Button className='w-full mt-3' onPress={handleTranslate} disabled={input.length < 3}>Translate</Button>
           <Separator className='w-full'/>
+          <Combobox selectedItem={selectedLanguage} items={languagesOptions} onSelectedItemChange={setSelectedLanguage} placeholder='Select Language'/>
+          <Button className='w-full mt-3' onPress={handleTranslate} disabled={!translationActivated()}>Translate</Button>
           <Text className='text-lg'>{output}</Text>
         </CardContent>
       </Card>
