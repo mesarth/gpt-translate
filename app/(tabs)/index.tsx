@@ -1,6 +1,6 @@
 import { Copy, CopyIcon } from 'lucide-react-native';
 import React, { useCallback, useState } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
@@ -11,6 +11,7 @@ import { Textarea } from '~/components/ui/textarea';
 import * as Clipboard from 'expo-clipboard';
 import Container from '../components/container';
 import { TranslationResponse, TranslationSerivce } from '~/service/translation.service';
+import { useTranslationStore } from '~/service/storage.service';
 
 
 export default function MainScreen() {
@@ -19,6 +20,7 @@ export default function MainScreen() {
   // const [output, setOutput] = useState<string>('Labore velit mollit excepteur commodo et proident ullamco qui deserunt amet laboris consequat commodo enim pariatur. Occaecat do ut sit non sit esse reprehenderit laboris do qui in proident.');
   const [output, setOutput] = useState<string>('');
   const [selectedLanguage, setSelectedLanguage] = React.useState<ComboboxOption | null>(null);
+  const addTranslation = useTranslationStore(state => state.addTranslation);
 
   const languagesOptions = TranslationSerivce.languages.map(l => ({label: `${l.name} - ${l.native} ${l.flag}`, value: l.name}));
 
@@ -27,6 +29,7 @@ export default function MainScreen() {
     setLoading(true);
     TranslationSerivce.translate(input, selectedLanguage?.value).then((res: TranslationResponse) => {
       setOutput(res?.message ?? '');
+      addTranslation({ input, inputLanguage: res?.inputLanguage ?? '', output: res?.message ?? '', outputLanguage: selectedLanguage?.value ?? ''});
     },
     err => console.log("error ", err)
     ).finally(() => setLoading(false));

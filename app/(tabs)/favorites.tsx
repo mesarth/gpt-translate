@@ -1,18 +1,10 @@
-import { Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Text } from 'react-native';
 import Container from '../components/container';
-import { useEffect, useState } from 'react';
-import { StorageService, Translation } from '~/service/storage.service';
+import { StorageService, Translation, useTranslationStore } from '~/service/storage.service';
+import { useState, useEffect } from 'react';
 
 export default function FavoritesScreen() {
-  
-  const [translations, setTranslations] = useState<Translation[]>([]);
-
-  useEffect(() => {
-    StorageService.getTranslations().then((res: Translation[]) => {
-      setTranslations(res);
-    });
-  }, []);
+  const translations = useTranslationStore(state => state.translations);
 
   return (
     <>

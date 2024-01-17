@@ -1,6 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StorageService } from './storage.service';
-
 
 export type TranslationResponse = {
   message?: string,
@@ -19,7 +17,6 @@ export class TranslationSerivce{
         body: JSON.stringify({ input, to })
       });
       const res = await response.json();
-      await StorageService.addTranslation({ input, inputLanguage: res?.inputLanguage ?? '', output: res?.message ?? '', outputLanguage: to });
       return res;
     } catch (err: Error | any) {
       return { error: err?.message ?? "unknown error" };
