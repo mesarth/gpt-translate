@@ -1,28 +1,33 @@
+import { Copy, CopyIcon } from 'lucide-react-native';
 import React, { useCallback, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { Combobox, ComboboxOption } from '~/components/ui/combobox';
 import { Separator } from '~/components/ui/separator';
+import { Skeleton } from '~/components/ui/skeleton';
 import { Textarea } from '~/components/ui/textarea';
 import { TranslationResponse, languages, translate } from '~/service/translation.service';
+import * as Clipboard from 'expo-clipboard';
 
 
 export default function MainScreen() {
+  const [loading, setLoading] = useState<boolean>(false);
   const [input, setInput] = useState<string>('');
-  const [output, setOutput] = useState<string>('');
+  const [output, setOutput] = useState<string>('Labore velit mollit excepteur commodo et proident ullamco qui deserunt amet laboris consequat commodo enim pariatur. Occaecat do ut sit non sit esse reprehenderit laboris do qui in proident.');
   const [selectedLanguage, setSelectedLanguage] = React.useState<ComboboxOption | null>(null);
 
   const languagesOptions = languages.map(l => ({label: l, value: l}));
 
   const handleTranslate = () => {
     if (!selectedLanguage?.value) return;
+    setLoading(true);
     translate(input, selectedLanguage?.value).then((res: TranslationResponse) => {
       setOutput(res?.message ?? '');
     },
     err => console.log("error ", err)
-    );
+    ).finally(() => setLoading(false));
   };
 
   const translationActivated = () => {
@@ -44,13 +49,24 @@ export default function MainScreen() {
   return (
     <View className='flex-1 justify-center items-center p-10'>
       <Text className='text-2xl native:text-4xl font-semibold text-foreground text-left w-full mb-2'>Translate</Text>
-      <Card className='p-3 w-full'>
-        <CardContent className='flex gap-3'>
+      <Card className='w-full'>
+        <CardContent className='p-5 flex gap-3'>
           <Textarea placeholder='Enter Text' onChangeText={(t) => setInput(t)}/>
-          <Separator className='w-full'/>
+        </CardContent>
+        <Separator className='w-full'/>
+        <CardContent className='p-5 flex gap-3'>
           <Combobox selectedItem={selectedLanguage} items={languagesOptions} onSelectedItemChange={setSelectedLanguage} placeholder='Select Language'/>
-          <Button className='w-full mt-3' onPress={handleTranslate} disabled={!translationActivated()} onTouchStart={() => showDisabledButtonToast()}>Translate</Button>
-          <Text className='text-lg'>{output}</Text>
+          <Skeleton key={`skeleton-button-${loading}`} show={loading} radius={4}>
+            <Button className='w-full mb-3' onPress={handleTranslate} disabled={!translationActivated()} onTouchStart={() => !translationActivated() && showDisabledButtonToast()}>Translate</Button>
+          </Skeleton>
+          <Skeleton key={`skeleton-text-${loading}`} show={loading} radius={4}>
+            <Text className='text-lg'>{output}</Text>
+          </Skeleton>
+          <View className='flex self-end'>
+            <Pressable onPress={() => Clipboard.setStringAsync(output)}>
+              <CopyIcon size={24} className='text-muted-foreground'/>
+            </Pressable>
+          </View>
         </CardContent>
       </Card>
     </View>
