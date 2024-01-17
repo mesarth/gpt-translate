@@ -1,11 +1,15 @@
 import { Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Container from '../components/container';
 
 export default function FavoritesScreen() {
   const insets = useSafeAreaInsets();
   return (
-    <View className='flex-1 justify-center items-center'>
-      <Text className='text-foreground text-xl'>Comming soon...</Text>
-    </View>
+    <>
+      <Container title='Favorites'>
+      </Container>
+      <Container title='Recents'>
+      </Container>
+    </>
   );
 }
