@@ -8,7 +8,10 @@ app.register(FastifySSEPlugin);
 
 
 async function translate(input: string, to: string){
-  const prompt = `Translate the input in quotes to ${to}. "${input}" Respond with a JSON object with either a message property with the translated input message or an error property with the explanation why the translation is not possible e.g. "invalid input" or "unknown output language". do not respond with anything apart from the JSON object.`;
+  const prompt = `
+  Translate the input in quotes to ${to}. "${input}".
+  Respond with a JSON object with either a message property with the translated input message and the inputLanguage property or an error property with the explanation why the translation is not possible e.g. "invalid input" or "unknown output language".
+  Do not respond with anything apart from the JSON object.`;
 
   const client = new OpenAI({
     apiKey: process.env.API_KEY,

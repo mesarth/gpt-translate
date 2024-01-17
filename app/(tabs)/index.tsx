@@ -10,15 +10,17 @@ import { Skeleton } from '~/components/ui/skeleton';
 import { Textarea } from '~/components/ui/textarea';
 import { TranslationResponse, languages, translate } from '~/service/translation.service';
 import * as Clipboard from 'expo-clipboard';
+import Container from '../components/container';
 
 
 export default function MainScreen() {
   const [loading, setLoading] = useState<boolean>(false);
   const [input, setInput] = useState<string>('');
-  const [output, setOutput] = useState<string>('Labore velit mollit excepteur commodo et proident ullamco qui deserunt amet laboris consequat commodo enim pariatur. Occaecat do ut sit non sit esse reprehenderit laboris do qui in proident.');
+  // const [output, setOutput] = useState<string>('Labore velit mollit excepteur commodo et proident ullamco qui deserunt amet laboris consequat commodo enim pariatur. Occaecat do ut sit non sit esse reprehenderit laboris do qui in proident.');
+  const [output, setOutput] = useState<string>('');
   const [selectedLanguage, setSelectedLanguage] = React.useState<ComboboxOption | null>(null);
 
-  const languagesOptions = languages.map(l => ({label: l, value: l}));
+  const languagesOptions = languages.map(l => ({label: `${l.name} - ${l.native} ${l.flag}`, value: l.name}));
 
   const handleTranslate = () => {
     if (!selectedLanguage?.value) return;
@@ -47,8 +49,7 @@ export default function MainScreen() {
   };
 
   return (
-    <View className='flex-1 justify-center items-center p-10'>
-      <Text className='text-2xl native:text-4xl font-semibold text-foreground text-left w-full mb-2'>Translate</Text>
+    <Container title='Translate'>
       <Card className='w-full'>
         <CardContent className='p-5 flex gap-3'>
           <Textarea placeholder='Enter Text' onChangeText={(t) => setInput(t)}/>
@@ -59,16 +60,20 @@ export default function MainScreen() {
           <Skeleton key={`skeleton-button-${loading}`} show={loading} radius={4}>
             <Button className='w-full mb-3' onPress={handleTranslate} disabled={!translationActivated()} onTouchStart={() => !translationActivated() && showDisabledButtonToast()}>Translate</Button>
           </Skeleton>
-          <Skeleton key={`skeleton-text-${loading}`} show={loading} radius={4}>
-            <Text className='text-lg'>{output}</Text>
-          </Skeleton>
-          <View className='flex self-end'>
-            <Pressable onPress={() => Clipboard.setStringAsync(output)}>
-              <CopyIcon size={24} className='text-muted-foreground'/>
-            </Pressable>
-          </View>
+          {output.length > 0 && (
+            <>
+              <Skeleton key={`skeleton-text-${loading}`} show={loading} radius={4}>
+                <Text className='text-lg'>{output}</Text>
+              </Skeleton>
+              <View className='flex self-end'>
+                <Pressable onPress={() => Clipboard.setStringAsync(output)}>
+                  <CopyIcon size={24} className='text-muted-foreground'/>
+                </Pressable>
+              </View>
+            </>
+          )}
         </CardContent>
       </Card>
-    </View>
+    </Container>
   );
 }

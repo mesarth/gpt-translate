@@ -1,5 +1,6 @@
 export type TranslationResponse = {
   message?: string,
+  inputLanguage?: string,
   error?: string
 }
 
@@ -17,25 +18,118 @@ export async function translate(input: string, to: string): Promise<TranslationR
     .catch(err => ({ error: err }));
 }
 
-export const languages: Array<string> = [
-  "English - English 🇺🇸 🇬🇧 🇦🇺 🇨🇦",
-  "Mandarin Chinese - 普通话/汉语 🇨🇳",
-  "Spanish - Español 🇪🇸 🇲🇽",
-  "Hindi - हिन्दी 🇮🇳",
-  "Arabic - العربية 🇸🇦 🇪🇬",
-  "Bengali - বাংলা 🇧🇩",
-  "Portuguese - Português 🇵🇹 🇧🇷",
-  "Russian - Русский 🇷🇺",
-  "Japanese - 日本語 (にほんご) 🇯🇵",
-  "German - Deutsch 🇩🇪",
-  "French - Français 🇫🇷",
-  "Urdu - اردو 🇵🇰",
-  "Italian - Italiano 🇮🇹",
-  "Korean - 한국어 🇰🇷",
-  "Turkish - Türkçe 🇹🇷",
-  "Vietnamese - Tiếng Việt 🇻🇳",
-  "Persian (Farsi) - فارسی 🇮🇷",
-  "Polish - Polski 🇵🇱",
-  "Dutch - Nederlands 🇳🇱",
-  "Indonesian - Bahasa Indonesia 🇮🇩",
+export type Language = {
+  name: string,
+  native: string,
+  flag: string
+}
+
+export const languages: Array<Language> = [
+  {
+    name: "English", 
+    native: "English",
+    flag: "🇺🇸 🇬🇧 🇦🇺 🇨🇦"
+  },
+  {
+    name: "Mandarin Chinese", 
+    native: "普通话/汉语",
+    flag: "🇨🇳"
+  },
+  {
+    name: "Spanish", 
+    native: "Español",
+    flag: " 🇪🇸🇲🇽"
+  },
+  {
+    name: "Hindi", 
+    native: "हिन्दी ",
+    flag: "🇮🇳"
+  },
+  {
+    name: "Arabic", 
+    native: "العربية",
+    flag: "🇸🇦 🇪🇬"
+  },
+  {
+    name: "Bengali", 
+    native: "বাংলা",
+    flag: "🇧🇩"
+  },
+  {
+    name: "Portuguese", 
+    native: "Português",
+    flag: "🇵🇹 🇧🇷"
+  },
+  {
+    name: "Russian", 
+    native: "Русский",
+    flag: "🇷🇺"
+  },
+  {
+    name: "Japanese", 
+    native: "日本語 (にほんご)",
+    flag: "🇯🇵"
+  },
+  {
+    name: "German", 
+    native: "Deutsch",
+    flag: "🇩🇪"
+  },
+  {
+    name: "French", 
+    native: "Français",
+    flag: "🇫🇷"
+  },
+  {
+    name: "Urdu", 
+    native: "اردو",
+    flag: "🇵🇰"
+  },
+  {
+    name: "Italian", 
+    native: "Italiano",
+    flag: "🇮🇹"
+  },
+  {
+    name: "Korean", 
+    native: "한국어",
+    flag: "🇰🇷"
+  },
+  {
+    name: "Turkish", 
+    native: "Türkçe",
+    flag: "🇹🇷"
+  },
+  {
+    name: "Vietnamese", 
+    native: "Tiếng Việt",
+    flag: "🇻🇳"
+  },
+  {
+    name: "Persian (Farsi)", 
+    native: "فارسی ",
+    flag: "🇮🇷"
+  },
+  {
+    name: "Polish", 
+    native: "Polski",
+    flag: "🇵🇱"
+  },
+  {
+    name: "Dutch", 
+    native: "Nederlands",
+    flag: "🇳🇱"
+  },
+  {
+    name: "Indonesian", 
+    native: "Bahasa Indonesia",
+    flag: "🇮🇩"
+  },
 ];
+
+export type Translation = {
+  input: string,
+  inputLanguage: string,
+  output: string,
+  outputLanguage: string
+}
