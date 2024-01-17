@@ -8,9 +8,9 @@ import { Combobox, ComboboxOption } from '~/components/ui/combobox';
 import { Separator } from '~/components/ui/separator';
 import { Skeleton } from '~/components/ui/skeleton';
 import { Textarea } from '~/components/ui/textarea';
-import { TranslationResponse, languages, translate } from '~/service/translation.service';
 import * as Clipboard from 'expo-clipboard';
 import Container from '../components/container';
+import { TranslationResponse, TranslationSerivce } from '~/service/translation.service';
 
 
 export default function MainScreen() {
@@ -20,12 +20,12 @@ export default function MainScreen() {
   const [output, setOutput] = useState<string>('');
   const [selectedLanguage, setSelectedLanguage] = React.useState<ComboboxOption | null>(null);
 
-  const languagesOptions = languages.map(l => ({label: `${l.name} - ${l.native} ${l.flag}`, value: l.name}));
+  const languagesOptions = TranslationSerivce.languages.map(l => ({label: `${l.name} - ${l.native} ${l.flag}`, value: l.name}));
 
   const handleTranslate = () => {
     if (!selectedLanguage?.value) return;
     setLoading(true);
-    translate(input, selectedLanguage?.value).then((res: TranslationResponse) => {
+    TranslationSerivce.translate(input, selectedLanguage?.value).then((res: TranslationResponse) => {
       setOutput(res?.message ?? '');
     },
     err => console.log("error ", err)
