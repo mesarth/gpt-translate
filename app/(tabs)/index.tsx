@@ -1,4 +1,4 @@
-import { Copy, CopyIcon } from 'lucide-react-native';
+import { Copy, CopyIcon, StarIcon } from 'lucide-react-native';
 import React, { useCallback, useState } from 'react';
 import { View, Text, Pressable, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Toast from 'react-native-toast-message';
@@ -11,7 +11,8 @@ import { Textarea } from '~/components/ui/textarea';
 import * as Clipboard from 'expo-clipboard';
 import Container from '../components/container';
 import { TranslationResponse, TranslationSerivce } from '~/service/translation.service';
-import { useTranslationStore } from '~/service/storage.service';
+import { Translation, useTranslationStore } from '~/service/storage.service';
+import TranslationCardActions from '../components/TranslatioonCardActions';
 
 
 export default function MainScreen() {
@@ -19,7 +20,9 @@ export default function MainScreen() {
   const [input, setInput] = useState<string>('');
   // const [output, setOutput] = useState<string>('Labore velit mollit excepteur commodo et proident ullamco qui deserunt amet laboris consequat commodo enim pariatur. Occaecat do ut sit non sit esse reprehenderit laboris do qui in proident.');
   const [output, setOutput] = useState<string>('');
-  const [selectedLanguage, setSelectedLanguage] = React.useState<ComboboxOption | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<ComboboxOption | null>(null);
+  const [translation, setTranslation] = useState<Translation | null>(null);
+
   const addTranslation = useTranslationStore(state => state.addTranslation);
 
   const languagesOptions = TranslationSerivce.languages.map(l => ({label: `${l.name} - ${l.native} ${l.flag}`, value: l.name}));
@@ -29,7 +32,9 @@ export default function MainScreen() {
     setLoading(true);
     TranslationSerivce.translate(input, selectedLanguage?.value).then((res: TranslationResponse) => {
       setOutput(res?.message ?? '');
-      addTranslation({ input, inputLanguage: res?.inputLanguage ?? '', output: res?.message ?? '', outputLanguage: selectedLanguage?.value ?? ''});
+      const translation: Translation = { input, inputLanguage: res?.inputLanguage ?? '', output: res?.message ?? '', outputLanguage: selectedLanguage?.value ?? ''};
+      setTranslation(translation);
+      addTranslation(translation);
     },
     err => console.log("error ", err)
     ).finally(() => setLoading(false));
@@ -63,16 +68,12 @@ export default function MainScreen() {
           <Skeleton key={`skeleton-button-${loading}`} show={loading} radius={4}>
             <Button className='w-full mb-3' onPress={handleTranslate} disabled={!translationActivated()} onTouchStart={() => !translationActivated() && showDisabledButtonToast()}>Translate</Button>
           </Skeleton>
-          {output.length > 0 && (
+          {translation && (
             <>
               <Skeleton key={`skeleton-text-${loading}`} show={loading} radius={4}>
                 <Text className='text-lg'>{output}</Text>
               </Skeleton>
-              <View className='flex self-end'>
-                <Pressable onPress={() => Clipboard.setStringAsync(output)}>
-                  <CopyIcon size={24} className='text-muted-foreground'/>
-                </Pressable>
-              </View>
+              <TranslationCardActions translation={translation} />
             </>
           )}
         </CardContent>

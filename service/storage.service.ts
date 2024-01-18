@@ -23,18 +23,3 @@ export const useTranslationStore = create<TranslationStorage>()(
     { name: 'translations', storage: createJSONStorage(() => AsyncStorage) },
   ),
 );
-
-export class StorageService{
-  static async getTranslations(): Promise<Array<Translation>> {
-    const translations = await AsyncStorage.getItem('translations');
-    if (!translations) {
-      return [];
-    }
-    return JSON.parse(translations);
-  }
-  
-  static async addTranslation(translation: Translation): Promise<void> {
-    const translations = await this.getTranslations();
-    await AsyncStorage.setItem('translations', JSON.stringify([...translations, translation]));
-  }
-}

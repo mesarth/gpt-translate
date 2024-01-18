@@ -1,9 +1,10 @@
-import { FlatList, Text } from 'react-native';
+import { FlatList, Pressable, Text, View } from 'react-native';
 import Container from '../components/container';
-import { StorageService, Translation, useTranslationStore } from '~/service/storage.service';
-import { useState, useEffect } from 'react';
 import { Card, CardContent, CardTitle } from '~/components/ui/card';
 import { Separator } from '~/components/ui/separator';
+import { useTranslationStore } from '~/service/storage.service';
+import { StarIcon, CopyIcon } from 'lucide-react-native';
+import TranslationCardActions from '../components/TranslatioonCardActions';
 
 export default function FavoritesScreen() {
   const translations = useTranslationStore(state => state.translations);
@@ -38,7 +39,7 @@ export default function FavoritesScreen() {
           data={translations}
           ListEmptyComponent={() => <Text className='text-foreground text-xl'>No translations yet...</Text>}
           renderItem={({item}) => 
-          <Card className='p-4'>
+          <Card className='p-4 mb-4'>
             <CardTitle>
               <Text className='text-foreground text-2xl'>
                 {item.inputLanguage} - {item.outputLanguage}
@@ -48,6 +49,7 @@ export default function FavoritesScreen() {
               <Text>{item.input}</Text>
               <Separator className='w-full'/>
               <Text>{item.output}</Text>
+              <TranslationCardActions translation={item} />
             </CardContent>
           </Card>
         }
