@@ -22,18 +22,18 @@ export default function TranslationCardActions({
   const isFavorite = useFavoriteStore((state) => state.isFavorite(translation));
 
   return (
-    <View className="flex flex-row gap-4 self-end">
+    <View className='flex flex-row gap-4 self-end'>
       <ToggleIcon
         toggled={isFavorite}
         onPress={() => toggleFavorite(translation)}
-        First={<StarIcon size={24} className="text-yellow-400" />}
-        Second={<StarOffIcon size={24} className="text-muted-foreground" />}
+        First={<StarIcon size={24} className='text-yellow-400' />}
+        Second={<StarOffIcon size={24} className='text-muted-foreground' />}
       />
       <ToggleIcon
         onPress={() => Clipboard.setStringAsync(translation.output)}
         time={5000}
-        First={<CopyIcon size={24} className="text-muted-foreground" />}
-        Second={<CheckIcon size={24} className="text-muted-foreground" />}
+        First={<CopyIcon size={24} className='text-muted-foreground' />}
+        Second={<CheckIcon size={24} className='text-muted-foreground' />}
       />
     </View>
   );

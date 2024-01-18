@@ -1,5 +1,11 @@
 import { Tabs } from 'expo-router';
-import { Camera, Languages, LayoutPanelLeft, MenuSquare, Star } from 'lucide-react-native';
+import {
+  Camera,
+  Languages,
+  LayoutPanelLeft,
+  MenuSquare,
+  Star,
+} from 'lucide-react-native';
 import { DrawerToggle } from '~/components/DrawerToggle';
 import { ThemeToggle } from '~/components/ThemeToggle';
 
@@ -10,25 +16,25 @@ export default function TabsLayout() {
         name='index'
         options={{
           title: 'Translate',
-          tabBarIcon({color, size}) {
+          tabBarIcon({ color, size }) {
             return <Languages color={color} size={size} />;
           },
         }}
       />
       <Tabs.Screen
-       name='camera'
-       options={{
-         title: 'Camera',
-         tabBarIcon({color, size}) {
-           return <Camera color={color} size={size} />;
-         },
-       }}
+        name='camera'
+        options={{
+          title: 'Camera',
+          tabBarIcon({ color, size }) {
+            return <Camera color={color} size={size} />;
+          },
+        }}
       />
       <Tabs.Screen
         name='favorites'
         options={{
           title: 'Favorites',
-          tabBarIcon({color, size}) {
+          tabBarIcon({ color, size }) {
             return <Star color={color} size={size} />;
           },
         }}

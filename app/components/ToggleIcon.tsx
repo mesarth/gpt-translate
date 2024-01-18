@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
-import Transition,{ useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Transition, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 interface Props {
   toggled?: boolean;
@@ -11,7 +15,13 @@ interface Props {
   time?: number;
 }
 
-export default function ToggleIcon({ toggled = false, onPress, First, Second, time }: Props) {
+export default function ToggleIcon({
+  toggled = false,
+  onPress,
+  First,
+  Second,
+  time,
+}: Props) {
   const [firstActive, setFirstActive] = useState(true);
 
   useEffect(() => {
@@ -25,11 +35,10 @@ export default function ToggleIcon({ toggled = false, onPress, First, Second, ti
   }, [firstActive, time]);
 
   const action = () => {
-    if(toggled){
+    if (toggled) {
       onPress && onPress();
-    } 
-    else if(firstActive || !time) {
-      setFirstActive(prev => !prev);
+    } else if (firstActive || !time) {
+      setFirstActive((prev) => !prev);
       onPress && onPress();
     }
   };
