@@ -2,13 +2,17 @@ import { FlatList, Pressable, Text, View } from 'react-native';
 import Container from '../components/container';
 import { Card, CardContent, CardTitle } from '~/components/ui/card';
 import { Separator } from '~/components/ui/separator';
-import { useTranslationStore } from '~/service/storage.service';
+import { useFavoriteStore, useTranslationStore } from '~/service/storage.service';
 import { StarIcon, CopyIcon } from 'lucide-react-native';
 import TranslationCardActions from '../components/TranslatioonCardActions';
 
+const EmptyList = ({text}: {text: string}) => (
+  <Text className='text-foreground text-xl text-center mt-10'>{text}</Text>
+);
+
 export default function FavoritesScreen() {
   const translations = useTranslationStore(state => state.translations);
-  const favorites:any = [];
+  const favorites = useFavoriteStore(state => state.favorites);
 
   return (
     <>
@@ -16,7 +20,7 @@ export default function FavoritesScreen() {
         <FlatList
           className='w-full'
           data={favorites}
-          ListEmptyComponent={() => <Text className='text-foreground text-xl text-center mt-10'>No favorites yet...</Text>}
+          ListEmptyComponent={() => <EmptyList text='No favorites yet...'/>}
           renderItem={({item}) => 
           <Card className='p-4'>
             <CardTitle>
@@ -37,7 +41,7 @@ export default function FavoritesScreen() {
         <FlatList
           className='w-full'
           data={translations}
-          ListEmptyComponent={() => <Text className='text-foreground text-xl'>No translations yet...</Text>}
+          ListEmptyComponent={() => <EmptyList text='No translations yet...'/>}
           renderItem={({item}) => 
           <Card className='p-4 mb-4'>
             <CardTitle>

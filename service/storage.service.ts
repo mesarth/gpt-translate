@@ -15,11 +15,26 @@ type TranslationStorage = {
 }
 
 export const useTranslationStore = create<TranslationStorage>()(
+  (set) => ({
+    translations: [],
+    addTranslation: (translation: Translation) => set((state) => ({ translations: [...state.translations, translation] })),
+  }),
+);
+
+
+type FavoriteStorage = {
+  favorites: Array<Translation>,
+  addFavorite: (favorite: Translation) => void,
+  removeFavorite: (favorite: Translation) => void
+}
+
+export const useFavoriteStore = create<FavoriteStorage>()(
   persist(
     (set) => ({
-      translations: [],
-      addTranslation: (translation: Translation) => set((state) => ({ translations: [...state.translations, translation] })),
+      favorites: [],
+      addFavorite: (favorite: Translation) => set((state) => ({ favorites: [...state.favorites, favorite] })),
+      removeFavorite: (favorite: Translation) => set((state) => ({ favorites: state.favorites.filter((f) => f.input !== favorite.input) })),
     }),
-    { name: 'translations', storage: createJSONStorage(() => AsyncStorage) },
+    { name: 'favorites', storage: createJSONStorage(() => AsyncStorage) },
   ),
 );
