@@ -32,6 +32,7 @@ export default function FavoritesScreen() {
               <Text>{item.input}</Text>
               <Separator className='w-full'/>
               <Text>{item.output}</Text>
+              <TranslationCardActions translation={item} />
             </CardContent>
           </Card>
         }

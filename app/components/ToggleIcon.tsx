@@ -14,8 +14,6 @@ interface Props {
 export default function ToggleIcon({ toggled = false, onPress, First, Second, time }: Props) {
   const [firstActive, setFirstActive] = useState(true);
 
-  console.log("toggled ", toggled);
-
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (!firstActive) {
