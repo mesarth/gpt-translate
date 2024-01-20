@@ -42,12 +42,14 @@ export default function TranslationTextRow({
 
   const classes = primary ? 'text-primary' : 'text-foreground';
 
+  const textSize = text.length > 50 ? 'text-2xl' : 'text-4xl';
+
   return (
     <View>
       <Text className={`text-md font-normal ${classes}`}>{language}</Text>
       <View className='flex flex-row gap-4 w-full justify-between items-center'>
         <Text
-          className={`text-4xl font-extrabold flex-shrink m-0 p-0 ${classes}`}
+          className={`${textSize} font-extrabold flex-shrink m-0 p-0 ${classes}`}
           numberOfLines={maximized ? undefined : 3}
         >
           {text}
