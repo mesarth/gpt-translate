@@ -26,6 +26,12 @@ export default function SettingsScreen() {
   const selectedVoice = useSettingsStore((state) => state.voice);
   const setSelectedVoice = useSettingsStore((state) => state.setVoice);
 
+  const autoPlay = useSettingsStore((state) => state.autoPlay);
+  const setAutoPlay = useSettingsStore((state) => state.setAutoPlay);
+
+  const autoCopy = useSettingsStore((state) => state.autoCopy);
+  const setAutoCopy = useSettingsStore((state) => state.setAutoCopy);
+
   const renderItem: RenderSelectItem = useCallback(
     ({ item, index }) => (
       <SelectItem className='w-full' item={item} index={index} />
@@ -53,13 +59,21 @@ export default function SettingsScreen() {
         <Label nativeID='switchLabel' className='text-xl pb-2'>
           Automatically copy translation
         </Label>
-        <Switch aria-labelledbyledBy='switchLabel' />
+        <Switch
+          aria-labelledbyledBy='switchLabel'
+          value={autoCopy}
+          onValueChange={setAutoCopy}
+        />
       </View>
       <View className='flex-row justify-between items-center gap-5 w-full'>
         <Label nativeID='switchLabel' className='text-xl pb-2'>
           Automatically play audio
         </Label>
-        <Switch aria-labelledbyledBy='switchLabel' />
+        <Switch
+          aria-labelledbyledBy='switchLabel'
+          value={autoPlay}
+          onValueChange={setAutoPlay}
+        />
       </View>
     </Container>
   );

@@ -13,8 +13,14 @@ export type Voice = typeof SettingsService.voices[number];
 
 type SettingsStore = {
   voice: Voice,
-  setVoice: (voice: Voice) => void
-  getVoice: () => Voice
+  setVoice: (voice: Voice) => void,
+  getVoice: () => Voice,
+  autoPlay: boolean,
+  setAutoPlay: (autoPlay: boolean) => void,
+  getAutoPlay: () => boolean,
+  autoCopy: boolean,
+  setAutoCopy: (autoCopy: boolean) => void,
+  getAutoCopy: () => boolean,
 }
 
 export const useSettingsStore = create<SettingsStore>()(
@@ -22,7 +28,13 @@ export const useSettingsStore = create<SettingsStore>()(
     (set, get) => ({
       voice: "alloy",
       setVoice: (voice: Voice) => set({ voice }),
-      getVoice: () => get().voice
+      getVoice: () => get().voice,
+      autoPlay: false,
+      setAutoPlay: (autoPlay: boolean) => set({ autoPlay }),
+      getAutoPlay: () => get().autoPlay,
+      autoCopy: false,
+      setAutoCopy: (autoCopy: boolean) => set({ autoCopy }),
+      getAutoCopy: () => get().autoCopy,
     }),
     { name: 'settings', storage: createJSONStorage(() => AsyncStorage) },
   ),

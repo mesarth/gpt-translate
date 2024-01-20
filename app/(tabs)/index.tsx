@@ -1,5 +1,5 @@
 import { Copy, CopyIcon, StarIcon } from 'lucide-react-native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -22,6 +22,8 @@ import {
 } from '~/service/translation.service';
 import { Translation, useTranslationStore } from '~/service/storage.service';
 import TranslationCardActions from '../components/TranslatioonCardActions';
+import { useSettingsStore } from '~/service/settings.service';
+import { Audio } from 'expo-av';
 
 export default function MainScreen() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,13 +33,33 @@ export default function MainScreen() {
   const [selectedLanguage, setSelectedLanguage] =
     useState<ComboboxOption | null>(null);
   const [translation, setTranslation] = useState<Translation | null>(null);
-
   const addTranslation = useTranslationStore((state) => state.addTranslation);
 
   const languagesOptions = TranslationSerivce.languages.map((l) => ({
     label: `${l.name} - ${l.native} ${l.flag}`,
     value: l.name,
   }));
+
+  const autoCopy = useSettingsStore((state) => state.autoCopy);
+  const autoPlay = useSettingsStore((state) => state.autoPlay);
+
+  const [sound, setSound] = useState<Audio.Sound>();
+  const voice = useSettingsStore((state) => state.voice);
+
+  const playAudio = (text: string) => {
+    TranslationSerivce.textToSpeech(text, voice).then((audio) => {
+      setSound(audio);
+      audio.playAsync();
+    });
+  };
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
 
   const handleTranslate = () => {
     if (!selectedLanguage?.value) return;
@@ -54,6 +76,8 @@ export default function MainScreen() {
           };
           setTranslation(translation);
           addTranslation(translation);
+          if (autoCopy) Clipboard.setStringAsync(translation.output);
+          if (autoPlay) playAudio(translation.output);
         },
         (err) => console.log('error ', err)
       )

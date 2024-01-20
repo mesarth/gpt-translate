@@ -1,5 +1,6 @@
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
+import { Voice, useSettingsStore } from './settings.service';
 
 export type TranslationResponse = {
   message?: string,
@@ -24,12 +25,12 @@ export class TranslationSerivce {
     }
   }
 
-  static async textToSpeech(text: string) {
+  static async textToSpeech(text: string, voice: Voice) {
     try {
-      const sound = new Audio.Sound()
+      const sound = new Audio.Sound();
 
       const { uri } = await FileSystem.downloadAsync(
-        `${process.env.EXPO_PUBLIC_API_URL}/text-to-speech?text=${text}&voice=alloy`,
+        `${process.env.EXPO_PUBLIC_API_URL}/text-to-speech?text=${text}&voice=${voice}`,
         FileSystem.documentDirectory + 'text-to-speech.mp3'
       )
 

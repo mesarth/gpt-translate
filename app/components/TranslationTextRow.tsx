@@ -4,6 +4,7 @@ import { PlayCircle, Volume1Icon } from 'lucide-react-native';
 import { TranslationSerivce } from '~/service/translation.service';
 import { useEffect, useState } from 'react';
 import { Audio } from 'expo-av';
+import { useSettingsStore } from '~/service/settings.service';
 
 export default function TranslationTextRow({
   language,
@@ -18,10 +19,11 @@ export default function TranslationTextRow({
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [sound, setSound] = useState<Audio.Sound>();
+  const voice = useSettingsStore((state) => state.voice);
 
   const playAudio = () => {
     setIsPlaying(true);
-    TranslationSerivce.textToSpeech(text).then((audio) => {
+    TranslationSerivce.textToSpeech(text, voice).then((audio) => {
       setSound(audio);
       audio.playAsync();
       audio.setOnPlaybackStatusUpdate((status) => {
