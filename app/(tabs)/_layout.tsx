@@ -4,6 +4,7 @@ import {
   Languages,
   LayoutPanelLeft,
   MenuSquare,
+  SettingsIcon,
   Star,
 } from 'lucide-react-native';
 import { DrawerToggle } from '~/components/DrawerToggle';
@@ -22,20 +23,20 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name='camera'
-        options={{
-          title: 'Camera',
-          tabBarIcon({ color, size }) {
-            return <Camera color={color} size={size} />;
-          },
-        }}
-      />
-      <Tabs.Screen
         name='favorites'
         options={{
           title: 'Favorites',
           tabBarIcon({ color, size }) {
             return <Star color={color} size={size} />;
+          },
+        }}
+      />
+      <Tabs.Screen
+        name='settings'
+        options={{
+          title: 'Settings',
+          tabBarIcon({ color, size }) {
+            return <SettingsIcon color={color} size={size} />;
           },
         }}
       />
