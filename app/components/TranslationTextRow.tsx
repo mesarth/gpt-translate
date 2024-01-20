@@ -9,10 +9,12 @@ export default function TranslationTextRow({
   language,
   text,
   primary = false,
+  maximized = false,
 }: {
   language: string;
   text: string;
   primary?: boolean;
+  maximized?: boolean;
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [sound, setSound] = useState<Audio.Sound>();
@@ -46,6 +48,7 @@ export default function TranslationTextRow({
       <View className='flex flex-row gap-4 w-full justify-between items-center'>
         <Text
           className={`text-4xl font-extrabold flex-shrink m-0 p-0 ${classes}`}
+          numberOfLines={maximized ? undefined : 3}
         >
           {text}
         </Text>
