@@ -25,12 +25,14 @@ export default function FavoritesScreen() {
         className='w-full'
         sections={data}
         renderItem={({ item }) => <TranslationCard item={item} />}
-        renderSectionHeader={({ section: { title } }) => (
-          <Text className='text-2xl native:text-4xl font-semibold text-foreground text-left w-full mb-2 bg-white'>
-            {title}
-          </Text>
+        renderSectionHeader={({ section: { title, data } }) => (
+          <>
+            <Text className='text-2xl native:text-4xl font-semibold text-foreground text-left w-full pb-2 bg-background'>
+              {title}
+            </Text>
+            {data.length == 0 && <EmptyList text='No entries yet...' />}
+          </>
         )}
-        ListEmptyComponent={() => <EmptyList text='No entries yet...' />}
         stickySectionHeadersEnabled
       />
     </Container>
