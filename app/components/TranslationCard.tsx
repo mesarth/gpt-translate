@@ -13,15 +13,14 @@ import TranslationTextRow from './TranslationTextRow';
 export default function TranslationCard({ item }: { item: Translation }) {
   return (
     <Card className='p-4 mb-4'>
-      <CardTitle>
-        <Text className='text-foreground text-2xl'>
-          {item.inputLanguage} - {item.outputLanguage}
-        </Text>
-      </CardTitle>
       <CardContent className='py-4 flex gap-2'>
-        <TranslationTextRow text={item.input} />
+        <TranslationTextRow language={item.inputLanguage} text={item.input} />
         <Separator className='w-full' />
-        <TranslationTextRow text={item.output} />
+        <TranslationTextRow
+          language={item.outputLanguage}
+          text={item.output}
+          primary
+        />
         <TranslationCardActions translation={item} />
       </CardContent>
     </Card>

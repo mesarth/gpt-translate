@@ -26,7 +26,7 @@ export default function TranslationCardActions({
       <ToggleIcon
         toggled={isFavorite}
         onPress={() => toggleFavorite(translation)}
-        First={<StarIcon size={24} className='text-yellow-400' />}
+        First={<StarIcon size={24} className='text-primary' />}
         Second={<StarOffIcon size={24} className='text-muted-foreground' />}
       />
       <ToggleIcon

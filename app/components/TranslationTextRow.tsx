@@ -5,7 +5,15 @@ import { TranslationSerivce } from '~/service/translation.service';
 import { useEffect, useState } from 'react';
 import { Audio } from 'expo-av';
 
-export default function TranslationTextRow({ text }: { text: string }) {
+export default function TranslationTextRow({
+  language,
+  text,
+  primary = false,
+}: {
+  language: string;
+  text: string;
+  primary?: boolean;
+}) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [sound, setSound] = useState<Audio.Sound>();
 
@@ -30,15 +38,24 @@ export default function TranslationTextRow({ text }: { text: string }) {
       : undefined;
   }, [sound]);
 
+  const classes = primary ? 'text-primary' : 'text-foreground';
+
   return (
-    <View className='flex flex-row gap-4 w-full justify-between items-center'>
-      <Text className='flex-shrink m-0 p-0'>{text}</Text>
-      <ToggleIcon
-        toggled={isPlaying}
-        onPress={playAudio}
-        First={<PlayCircle size={28} className='text-muted-foreground' />}
-        Second={<Volume1Icon size={28} className='text-muted-foreground' />}
-      />
+    <View>
+      <Text className={`text-md font-normal ${classes}`}>{language}</Text>
+      <View className='flex flex-row gap-4 w-full justify-between items-center'>
+        <Text
+          className={`text-4xl font-extrabold flex-shrink m-0 p-0 ${classes}`}
+        >
+          {text}
+        </Text>
+        <ToggleIcon
+          toggled={isPlaying}
+          onPress={playAudio}
+          First={<PlayCircle size={28} className={classes} />}
+          Second={<Volume1Icon size={28} className={classes} />}
+        />
+      </View>
     </View>
   );
 }
