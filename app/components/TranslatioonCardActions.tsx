@@ -22,7 +22,7 @@ export default function TranslationCardActions({
   const isFavorite = useFavoriteStore((state) => state.isFavorite(translation));
 
   return (
-    <View className='flex flex-row gap-4 self-end'>
+    <View className='flex flex-row gap-4 self-start mt-2'>
       <ToggleIcon
         toggled={isFavorite}
         onPress={() => toggleFavorite(translation)}

@@ -55,16 +55,9 @@ app.get('/text-to-speech', async (request: TTSRequest, reply) => {
     voice: voice,
   });
 
-  // Set headers for chunked transfer encoding
-  reply.raw.writeHead(200, {
-    'Content-Type': 'audio/mpeg',
-    'Transfer-Encoding': 'chunked'
-  });
-
-  const stream = response?.body;
-  if (stream) {
-    reply.send(stream);
-  }
+  const buffer = Buffer.from(await response.arrayBuffer());
+  reply.header('Content-Type', 'audio/mpeg');
+  reply.send(buffer);
 });
 
 app.listen({ port: 8080 }, (err, address) => {
