@@ -1,12 +1,4 @@
-import { Copy, CopyIcon, StarIcon } from 'lucide-react-native';
-import React, { useCallback, useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  Pressable,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from 'react-native';
+import React, { useState } from 'react';
 import Toast from 'react-native-toast-message';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
@@ -21,15 +13,14 @@ import {
   TranslationSerivce,
 } from '~/service/translation.service';
 import { Translation, useTranslationStore } from '~/service/storage.service';
-import TranslationCardActions from '../components/TranslatioonCardActions';
 import { useSettingsStore } from '~/service/settings.service';
-import { Audio } from 'expo-av';
+import TranslationOutput from '../components/index/TranslationOutput';
+import usePlayAudio from '../hooks/usePlayAudio';
 
 export default function MainScreen() {
   const [loading, setLoading] = useState<boolean>(false);
   const [input, setInput] = useState<string>('');
-  // const [output, setOutput] = useState<string>('Labore velit mollit excepteur commodo et proident ullamco qui deserunt amet laboris consequat commodo enim pariatur. Occaecat do ut sit non sit esse reprehenderit laboris do qui in proident.');
-  const [output, setOutput] = useState<string>('');
+
   const [selectedLanguage, setSelectedLanguage] =
     useState<ComboboxOption | null>(null);
   const [translation, setTranslation] = useState<Translation | null>(null);
@@ -43,23 +34,7 @@ export default function MainScreen() {
   const autoCopy = useSettingsStore((state) => state.autoCopy);
   const autoPlay = useSettingsStore((state) => state.autoPlay);
 
-  const [sound, setSound] = useState<Audio.Sound>();
-  const voice = useSettingsStore((state) => state.voice);
-
-  const playAudio = (text: string) => {
-    TranslationSerivce.textToSpeech(text, voice).then((audio) => {
-      setSound(audio);
-      audio.playAsync();
-    });
-  };
-
-  useEffect(() => {
-    return sound
-      ? () => {
-          sound.unloadAsync();
-        }
-      : undefined;
-  }, [sound]);
+  const { playAudio } = usePlayAudio();
 
   const handleTranslate = () => {
     if (!selectedLanguage?.value) return;
@@ -67,7 +42,6 @@ export default function MainScreen() {
     TranslationSerivce.translate(input, selectedLanguage?.value)
       .then(
         (res: TranslationResponse) => {
-          setOutput(res?.message ?? '');
           const translation: Translation = {
             input,
             inputLanguage: res?.inputLanguage ?? '',
@@ -110,7 +84,7 @@ export default function MainScreen() {
           />
         </CardContent>
         <Separator className='w-full' />
-        <CardContent className='p-5 flex gap-3'>
+        <CardContent className='p-5 pb-0 flex gap-3'>
           <Combobox
             selectedItem={selectedLanguage}
             items={languagesOptions}
@@ -133,19 +107,10 @@ export default function MainScreen() {
               Translate
             </Button>
           </Skeleton>
-          {translation && (
-            <>
-              <Skeleton
-                key={`skeleton-text-${loading}`}
-                show={loading}
-                radius={4}
-              >
-                <Text className='text-lg'>{output}</Text>
-              </Skeleton>
-              <TranslationCardActions translation={translation} />
-            </>
-          )}
         </CardContent>
+        {translation && (
+          <TranslationOutput loading={loading} translation={translation} />
+        )}
       </Card>
     </Container>
   );

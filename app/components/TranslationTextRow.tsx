@@ -1,10 +1,7 @@
 import { View, Text } from 'react-native';
 import ToggleIcon from './ToggleIcon';
 import { PlayCircle, Volume1Icon } from 'lucide-react-native';
-import { TranslationSerivce } from '~/service/translation.service';
-import { useEffect, useState } from 'react';
-import { Audio } from 'expo-av';
-import { useSettingsStore } from '~/service/settings.service';
+import usePlayAudio from '../hooks/usePlayAudio';
 
 export default function TranslationTextRow({
   language,
@@ -17,33 +14,9 @@ export default function TranslationTextRow({
   primary?: boolean;
   maximized?: boolean;
 }) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [sound, setSound] = useState<Audio.Sound>();
-  const voice = useSettingsStore((state) => state.voice);
-
-  const playAudio = () => {
-    setIsPlaying(true);
-    TranslationSerivce.textToSpeech(text, voice).then((audio) => {
-      setSound(audio);
-      audio.playAsync();
-      audio.setOnPlaybackStatusUpdate((status) => {
-        if (status.isLoaded && status.didJustFinish) {
-          setIsPlaying(false);
-        }
-      });
-    });
-  };
-
-  useEffect(() => {
-    return sound
-      ? () => {
-          sound.unloadAsync();
-        }
-      : undefined;
-  }, [sound]);
+  const { isPlaying, playAudio } = usePlayAudio();
 
   const classes = primary ? 'text-primary' : 'text-foreground';
-
   const textSize = text.length > 50 ? 'text-2xl' : 'text-4xl';
 
   return (
@@ -58,7 +31,7 @@ export default function TranslationTextRow({
         </Text>
         <ToggleIcon
           toggled={isPlaying}
-          onPress={playAudio}
+          onPress={() => playAudio(text)}
           First={<PlayCircle size={28} className={classes} />}
           Second={<Volume1Icon size={28} className={classes} />}
         />

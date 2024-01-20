@@ -22,24 +22,28 @@ export default function TranslationCardActions({
   translation,
   maximized,
   onMaximize,
+  showMaximize = true,
 }: {
   translation: Translation;
   maximized?: boolean;
   onMaximize?: () => void;
+  showMaximize?: boolean;
 }) {
   const toggleFavorite = useFavoriteStore((state) => state.toggleFavorite);
   const isFavorite = useFavoriteStore((state) => state.isFavorite(translation));
 
   return (
     <View className='flex flex-row gap-4 self-start mt-2'>
-      <ToggleIcon
-        toggled={maximized}
-        onPress={() => {
-          onMaximize?.();
-        }}
-        First={<Maximize2Icon size={24} className='text-muted-foreground' />}
-        Second={<Minimize2Icon size={24} className='text-muted-foreground' />}
-      />
+      {showMaximize && (
+        <ToggleIcon
+          toggled={maximized}
+          onPress={() => {
+            onMaximize?.();
+          }}
+          First={<Maximize2Icon size={24} className='text-muted-foreground' />}
+          Second={<Minimize2Icon size={24} className='text-muted-foreground' />}
+        />
+      )}
       <ToggleIcon
         toggled={isFavorite}
         onPress={() => toggleFavorite(translation)}
