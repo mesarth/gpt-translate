@@ -1,4 +1,4 @@
-import { FlatList, Text } from 'react-native';
+import { FlatList, SectionList, Text } from 'react-native';
 import Container from '../components/container';
 import {
   useFavoriteStore,
@@ -14,24 +14,25 @@ export default function FavoritesScreen() {
   const translations = useTranslationStore((state) => state.translations);
   const favorites = useFavoriteStore((state) => state.favorites);
 
+  const data = [
+    { title: 'Favorites', data: favorites },
+    { title: 'Recents', data: translations },
+  ];
+
   return (
-    <>
-      <Container title='Favorites'>
-        <FlatList
-          className='w-full'
-          data={favorites}
-          ListEmptyComponent={() => <EmptyList text='No favorites yet...' />}
-          renderItem={({ item }) => <TranslationCard item={item} />}
-        />
-      </Container>
-      <Container title='Recents'>
-        <FlatList
-          className='w-full'
-          data={translations}
-          ListEmptyComponent={() => <EmptyList text='No translations yet...' />}
-          renderItem={({ item }) => <TranslationCard item={item} />}
-        />
-      </Container>
-    </>
+    <Container>
+      <SectionList
+        className='w-full'
+        sections={data}
+        renderItem={({ item }) => <TranslationCard item={item} />}
+        renderSectionHeader={({ section: { title } }) => (
+          <Text className='text-2xl native:text-4xl font-semibold text-foreground text-left w-full mb-2'>
+            {title}
+          </Text>
+        )}
+        ListEmptyComponent={() => <EmptyList text='No entries yet...' />}
+        stickySectionHeadersEnabled
+      />
+    </Container>
   );
 }
