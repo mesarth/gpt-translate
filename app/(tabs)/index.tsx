@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Text } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
@@ -16,8 +17,10 @@ import { Translation, useTranslationStore } from '~/service/storage.service';
 import { useSettingsStore } from '~/service/settings.service';
 import TranslationOutput from '../components/index/TranslationOutput';
 import usePlayAudio from '../hooks/usePlayAudio';
+import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 
 export default function MainScreen() {
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [input, setInput] = useState<string>('');
 
@@ -39,9 +42,14 @@ export default function MainScreen() {
   const handleTranslate = () => {
     if (!selectedLanguage?.value) return;
     setLoading(true);
+    setError(null);
     TranslationSerivce.translate(input, selectedLanguage?.value)
       .then(
         (res: TranslationResponse) => {
+          if (res.error) {
+            setError(res.error);
+            return;
+          }
           const translation: Translation = {
             input,
             inputLanguage: res?.inputLanguage ?? '',
@@ -110,6 +118,18 @@ export default function MainScreen() {
         </CardContent>
         {translation && (
           <TranslationOutput loading={loading} translation={translation} />
+        )}
+        {error && (
+          <CardContent className='p-5 flex gap-3'>
+            <Alert
+              icon='AlertTriangle'
+              variant='destructive'
+              className='max-w-xl'
+            >
+              <AlertTitle>Error!</AlertTitle>
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          </CardContent>
         )}
       </Card>
     </Container>
