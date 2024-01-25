@@ -1,6 +1,7 @@
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import { Voice, useSettingsStore } from './settings.service';
+import { Platform } from 'react-native';
 
 export type TranslationResponse = {
   message?: string,
@@ -8,10 +9,12 @@ export type TranslationResponse = {
   error?: string
 }
 
+const baseUrl = Platform.OS === 'android' ? process.env.EXPO_PUBLIC_API_URL_ANDROID : process.env.EXPO_PUBLIC_API_URL_IOS;
+
 export class TranslationSerivce {
   static async translate(input: string, to: string): Promise<TranslationResponse> {
     try {
-      const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/translate`, {
+      const response = await fetch(`${baseUrl}/translate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -30,7 +33,7 @@ export class TranslationSerivce {
       const sound = new Audio.Sound();
 
       const { uri } = await FileSystem.downloadAsync(
-        `${process.env.EXPO_PUBLIC_API_URL}/text-to-speech?text=${text}&voice=${voice}`,
+        encodeURI(`${baseUrl}/text-to-speech?text=${text}&voice=${voice}`),
         FileSystem.documentDirectory + 'text-to-speech.mp3'
       )
 
