@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { Button } from '~/components/ui/button';
@@ -18,6 +18,7 @@ import { useSettingsStore } from '~/service/settings.service';
 import TranslationOutput from '../components/index/TranslationOutput';
 import usePlayAudio from '../hooks/usePlayAudio';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
+import TranslationInput from '../components/index/TranslationInput';
 
 export default function MainScreen() {
   const [error, setError] = useState<string | null>(null);
@@ -82,15 +83,19 @@ export default function MainScreen() {
     });
   };
 
+  useEffect(() => {
+    if (
+      translation?.input !== input ||
+      translation?.outputLanguage !== selectedLanguage?.value
+    ) {
+      setTranslation(null);
+    }
+  }, [input, selectedLanguage]);
+
   return (
     <Container title='Translate'>
       <Card className='w-full'>
-        <CardContent className='p-5 flex gap-3'>
-          <Textarea
-            placeholder='Enter Text'
-            onChangeText={(t) => setInput(t)}
-          />
-        </CardContent>
+        <TranslationInput onChangeText={setInput} />
         <Separator className='w-full' />
         <CardContent className='p-5 pb-0 flex gap-3'>
           <Combobox
