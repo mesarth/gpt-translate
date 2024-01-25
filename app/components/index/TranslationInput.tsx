@@ -19,6 +19,7 @@ export default function TranslationInput({
 
   const onClear = () => {
     setValue('');
+    onChangeText('');
   };
 
   // Update icon's opacity based on input value
