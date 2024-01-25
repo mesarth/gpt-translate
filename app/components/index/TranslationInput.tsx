@@ -1,4 +1,5 @@
 import { XCircleIcon } from 'lucide-react-native';
+import { useColorScheme } from 'nativewind';
 import React, { useEffect, useState } from 'react';
 import { Pressable, TextInput } from 'react-native';
 import Animated, {
@@ -33,10 +34,15 @@ export default function TranslationInput({
 
   const textSize = value.length > 30 ? 'text-2xl' : 'text-4xl';
 
+  const { colorScheme } = useColorScheme();
+
   return (
     <CardContent className='p-5 flex flex-row items-center gap-3 w-full justify-between'>
       <TextInput
         className={`flex-1 border-0 p-3 native:${textSize} font-bold h-28 leading-[1.25] text-foreground items-center ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`}
+        placeholderTextColor={
+          colorScheme === 'light' ? 'hsl(25 5.3% 44.7%)' : 'hsl(24 5.4% 63.9%)'
+        }
         value={value}
         multiline={true}
         placeholder='Enter Text'
