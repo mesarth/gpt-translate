@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text } from 'react-native';
+import { Keyboard, Text } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
@@ -41,6 +41,7 @@ export default function MainScreen() {
   const { playAudio } = usePlayAudio();
 
   const handleTranslate = () => {
+    Keyboard.dismiss();
     if (!selectedLanguage?.value) return;
     setLoading(true);
     setError(null);
