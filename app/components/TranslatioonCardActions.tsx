@@ -3,20 +3,13 @@ import {
   CopyIcon,
   CheckIcon,
   StarOffIcon,
-  MaximizeIcon,
-  MinimizeIcon,
   Minimize2Icon,
   Maximize2Icon,
 } from 'lucide-react-native';
-import { View, Pressable } from 'react-native';
+import { View } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
-import {
-  Translation,
-  useFavoriteStore,
-  useTranslationStore,
-} from '~/service/storage.service';
+import { Translation, useFavoriteStore } from '~/service/storage.service';
 import ToggleIcon from './ToggleIcon';
-import { useState } from 'react';
 
 export default function TranslationCardActions({
   translation,

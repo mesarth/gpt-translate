@@ -1,13 +1,5 @@
 import { Tabs } from 'expo-router';
-import {
-  Camera,
-  Languages,
-  LayoutPanelLeft,
-  MenuSquare,
-  SettingsIcon,
-  Star,
-} from 'lucide-react-native';
-import { DrawerToggle } from '~/components/DrawerToggle';
+import { Languages, SettingsIcon, Star } from 'lucide-react-native';
 import { ThemeToggle } from '~/components/ThemeToggle';
 
 export default function TabsLayout() {

@@ -1,5 +1,4 @@
-import { Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View } from 'react-native';
 import Container from '../components/container';
 import { Label } from '~/components/ui/label';
 import { Switch } from '~/components/ui/switch';
@@ -41,7 +40,7 @@ export default function SettingsScreen() {
 
   return (
     <Container title='Settings' className='gap-4'>
-      <View className='flex'>
+      <View className='flex w-full'>
         <Label>Text to Speech Voice</Label>
         <Select
           items={voiceItems}

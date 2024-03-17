@@ -1,6 +1,6 @@
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
-import { Voice, useSettingsStore } from './settings.service';
+import { Voice } from './settings.service';
 import { Platform } from 'react-native';
 
 export type TranslationResponse = {

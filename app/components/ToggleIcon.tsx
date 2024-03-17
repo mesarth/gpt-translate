@@ -1,11 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable } from 'react-native';
-import Animated from 'react-native-reanimated';
-import Transition, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
 
 interface Props {
   toggled?: boolean;

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Keyboard, Text } from 'react-native';
+import { Keyboard } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { Combobox, ComboboxOption } from '~/components/ui/combobox';
 import { Separator } from '~/components/ui/separator';
 import { Skeleton } from '~/components/ui/skeleton';
-import { Textarea } from '~/components/ui/textarea';
 import * as Clipboard from 'expo-clipboard';
 import Container from '../components/container';
 import {
