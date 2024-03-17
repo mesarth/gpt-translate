@@ -1,4 +1,4 @@
-<p align="center">
+<p style="margin: 0" align="center">
   <img alt="expo sdk" height="400" src="./doc/screenshot-overview.png">
   <h1 align="center">GPT Translate</h1>
   <div align="center">
